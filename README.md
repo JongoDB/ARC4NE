@@ -1,4 +1,4 @@
-# ARC4NE - C2 System
+# ARC4NE
 
 This repository contains the source code for ARC4NE: **Accelerated Remote Configuration, Collection, Command, and Control for Node-based Environments**.
 
@@ -161,8 +161,3 @@ ARC4NE follows a microservices architecture with the following components:
 
 For detailed architecture documentation, see the `/docs` directory.
 \`\`\`
-
-Let me also remove the shell scripts that are no longer needed:
-
-```typescriptreact file="check-imports.sh" isDeleted="true"
-...deleted...
