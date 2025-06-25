@@ -1,0 +1,42 @@
+# Core FastAPI and ASGI server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Data validation and serialization
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
+
+# Authentication and Security
+passlib[bcrypt]==1.7.4
+PyJWT==2.8.0
+python-jose[cryptography]==3.3.0
+bcrypt==4.0.1
+python-multipart==0.0.6
+
+# HTTP client
+requests==2.31.0
+httpx==0.25.2
+
+# System monitoring and telemetry
+psutil==5.9.6
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Date and time utilities
+python-dateutil==2.8.2
+
+# JSON handling
+orjson==3.9.10
+
+# Logging
+structlog==23.2.0
+
+# Development and testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2

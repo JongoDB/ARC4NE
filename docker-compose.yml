@@ -1,0 +1,71 @@
+services:
+  # Nginx Reverse Proxy
+  arc4ne-proxy:
+    image: nginx:1.25-alpine
+    container_name: arc4ne-proxy
+    ports:
+      - "80:80"
+      - "443:443" # For future HTTPS
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./certs:/etc/nginx/certs:ro # For future HTTPS certs
+    networks:
+      - arc4ne_network
+    depends_on:
+      - arc4ne-api
+      - arc4ne-webui
+    restart: unless-stopped
+
+  # FastAPI Backend
+  arc4ne-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: arc4ne-api
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/usr/src/app # Mount for local development hot-reloading
+    networks:
+      - arc4ne_network
+    depends_on:
+      - arc4ne-db
+    restart: unless-stopped
+
+  # Next.js Frontend
+  arc4ne-webui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: arc4ne-webui
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app  # Mount the frontend directory to /app in container
+      - /app/node_modules  # Prevent node_modules from being overwritten
+    networks:
+      - arc4ne_network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  arc4ne-db:
+    image: postgres:16-alpine
+    container_name: arc4ne-db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - arc4ne_network
+    restart: unless-stopped
+
+# Define the network
+networks:
+  arc4ne_network:
+    driver: bridge
+
+# Define the volume for persistent DB data
+volumes:
+  postgres_data:
