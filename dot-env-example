@@ -1,0 +1,28 @@
+# Database Configuration
+POSTGRES_DB=arc4ne_db
+POSTGRES_USER=arc4ne_user
+POSTGRES_PASSWORD=arc4ne_db_password
+DATABASE_URL=postgresql://arc4ne_user:arc4ne_db_password@arc4ne-db:5432/arc4ne_db
+
+# JWT Configuration
+JWT_SECRET_KEY=5a8131632bacdf8ee822fa2f8abcdc36a1e94d54df192eb23a5757b4c7b772b0
+JWT_ALGORITHM=HS256
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Frontend Configuration
+# Updated for HTTPS support
+NEXT_PUBLIC_API_URL=https://arc4ne.jon.devs/api/v1
+NODE_ENV=development
+
+# HTTPS Configuration
+# Certificate settings (optional - defaults work for most cases)
+TLS_CERT_DAYS=365
+TLS_CERT_COUNTRY=US
+TLS_CERT_STATE=Local
+TLS_CERT_CITY=Local
+TLS_CERT_ORG=ARC4NE
+TLS_CERT_UNIT=Development
