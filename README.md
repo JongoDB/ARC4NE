@@ -8,7 +8,7 @@ ARC4NE is a modern, secure command and control (C2) framework designed for legit
 
 ## 🏗️ Architecture
 
-![ARC4NE Architecture](docs/arc4ne-architecture.png)
+![ARC4NE Architecture](docs/arc4ne-architecture.svg)
 
 ### System Components
 
