@@ -1,0 +1,88 @@
+services:
+  # Nginx Reverse Proxy with HTTPS
+  arc4ne-proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: arc4ne-proxy
+    ports:
+      - "80:80"   # HTTP (redirects to HTTPS)
+      - "443:443" # HTTPS
+    volumes:
+      - nginx_certs:/etc/nginx/certs  # Persistent certificate storage
+      - nginx_logs:/var/log/nginx     # Persistent logs
+    networks:
+      - arc4ne_network
+    depends_on:
+      - arc4ne-api
+      - arc4ne-webui
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+
+  # FastAPI Backend
+  arc4ne-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: arc4ne-api
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/usr/src/app # Mount for local development hot-reloading
+    networks:
+      - arc4ne_network
+    depends_on:
+      - arc4ne-db
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+
+  # Next.js Frontend
+  arc4ne-webui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: arc4ne-webui
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - TZ=UTC
+    volumes:
+      - ./frontend:/app  # Mount the frontend directory to /app in container
+      - /app/node_modules  # Prevent node_modules from being overwritten
+    networks:
+      - arc4ne_network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  arc4ne-db:
+    image: postgres:16-alpine
+    container_name: arc4ne-db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - arc4ne_network
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+
+# Define the network
+networks:
+  arc4ne_network:
+    driver: bridge
+
+# Define volumes for persistent data
+volumes:
+  postgres_data:
+    driver: local
+  nginx_certs:
+    driver: local
+  nginx_logs:
+    driver: local
+
+# Make scripts executable (run this manually after first clone)
+# chmod +x scripts/*.sh
